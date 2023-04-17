@@ -39,7 +39,7 @@ class ListExercise:
         low = 0
         high = len(input_list) - 1
 
-        def binary_search_recursive(input_list, query, low, high):
+        def binary_search_recursive(input_list: list[int], query: int, low: int, high: int) -> int:
             if low > high:
                 return -1
 
