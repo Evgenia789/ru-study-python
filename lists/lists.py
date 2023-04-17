@@ -10,17 +10,18 @@ class ListExercise:
         """
         if input_list:
             max_elem = input_list[0]
-            len_list = len(input_list)
 
-            for i in range(1, len_list):
-                if input_list[i] > max_elem:
-                    max_elem = input_list[i]
+            for elem in input_list:
+                if elem > max_elem:
+                    max_elem = elem
 
-            output_list = list(input_list)
+            output_list = []
 
-            for i in range(len_list):
-                if input_list[i] != max_elem and input_list[i] > 0:
-                    output_list[i] = max_elem
+            for elem in input_list:
+                if elem > 0:
+                    output_list.append(max_elem)
+                else:
+                    output_list.append(elem)
 
             return output_list
         return input_list

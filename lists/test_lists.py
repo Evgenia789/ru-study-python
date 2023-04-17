@@ -1,5 +1,3 @@
-import pytest
-
 from .lists import ListExercise
 
 
