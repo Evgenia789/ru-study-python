@@ -8,7 +8,23 @@ class ListExercise:
         :param input_list: Исходный список
         :return: Список с замененными элементами
         """
-        pass
+        if input_list:
+            max_elem = input_list[0]
+
+            for elem in input_list:
+                if elem > max_elem:
+                    max_elem = elem
+
+            output_list = []
+
+            for elem in input_list:
+                if elem > 0:
+                    output_list.append(max_elem)
+                else:
+                    output_list.append(elem)
+
+            return output_list
+        return input_list
 
     @staticmethod
     def search(input_list: list[int], query: int) -> int:
@@ -20,4 +36,20 @@ class ListExercise:
         :param query: Искомый элемент
         :return: Номер элемента
         """
-        pass
+        low = 0
+        high = len(input_list) - 1
+
+        def binary_search_recursive(input_list: list[int], query: int, low: int, high: int) -> int:
+            if low > high:
+                return -1
+
+            mid = (low + high) // 2
+            if query == input_list[mid]:
+                return mid
+
+            if query < input_list[mid]:
+                return binary_search_recursive(input_list, query, low, mid - 1)
+            else:
+                return binary_search_recursive(input_list, query, mid + 1, high)
+
+        return binary_search_recursive(input_list, query, low, high)
