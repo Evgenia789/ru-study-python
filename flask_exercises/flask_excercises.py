@@ -52,7 +52,7 @@ class FlaskExercise:
         def update_user(name: str):
             data = request.get_json()
             new_name = data.get("name")
-            if new_name is None:
+            if name not in users:
                 return make_response(jsonify(), HTTPStatus.NOT_FOUND)
             del users[name]
             users[new_name] = {}
