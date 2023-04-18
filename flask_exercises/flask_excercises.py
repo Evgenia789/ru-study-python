@@ -46,12 +46,14 @@ class FlaskExercise:
         def get_user(name: str):
             if name in users:
                 return jsonify({"data": f"My name is {name}"}), HTTPStatus.OK
-            return make_response(jsonify(), 404)
+            return make_response(jsonify(), HTTPStatus.NOT_FOUND)
 
         @app.route('/user/<name>', methods=['PATCH'])
         def update_user(name: str):
             data = request.get_json()
             new_name = data.get("name")
+            if new_name is None:
+                return make_response(jsonify(), HTTPStatus.NOT_FOUND)
             del users[name]
             users[new_name] = {}
             return jsonify({"data": f"My name is {new_name}"}), HTTPStatus.OK
@@ -61,7 +63,7 @@ class FlaskExercise:
             print(users)
             if name in users:
                 del users[name]
-                response = "", 204
+                response = "", HTTPStatus.NO_CONTENT
             else:
-                response = "", 404
+                response = "", HTTPStatus.NOT_FOUND
             return response
