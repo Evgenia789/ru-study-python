@@ -1,4 +1,6 @@
-from flask import Flask
+from http import HTTPStatus
+
+from flask import Flask, jsonify, request, make_response
 
 
 class FlaskExercise:
@@ -28,4 +30,40 @@ class FlaskExercise:
 
     @staticmethod
     def configure_routes(app: Flask) -> None:
-        pass
+        users = {}
+
+        @app.route('/user', methods=['POST'])
+        def create_user():
+            data = request.get_json()
+            if 'name' not in request.get_json() or not request.get_json()['name']:
+                return jsonify({'errors': {'name': 'This field is required'}}), HTTPStatus.UNPROCESSABLE_ENTITY
+            else:
+                name = data.get("name")
+                users[name] = {}
+                return jsonify({"data": f"User {name} is created!"}), HTTPStatus.CREATED
+
+        @app.route('/user/<name>', methods=['GET'])
+        def get_user(name: str):
+            if name in users:
+                return jsonify({"data": f"My name is {name}"}), HTTPStatus.OK
+            return make_response(jsonify(), HTTPStatus.NOT_FOUND)
+
+        @app.route('/user/<name>', methods=['PATCH'])
+        def update_user(name: str):
+            data = request.get_json()
+            new_name = data.get("name")
+            if name not in users:
+                return make_response(jsonify(), HTTPStatus.NOT_FOUND)
+            del users[name]
+            users[new_name] = {}
+            return jsonify({"data": f"My name is {new_name}"}), HTTPStatus.OK
+
+        @app.route('/user/<name>', methods=['DELETE'])
+        def delete_user(name):
+            print(users)
+            if name in users:
+                del users[name]
+                response = "", HTTPStatus.NO_CONTENT
+            else:
+                response = "", HTTPStatus.NOT_FOUND
+            return response
